@@ -59,7 +59,7 @@ fun void note_on(int note, int velocity){
     note => msg.data2;
     velocity => msg.data3;
     midi_out.send(msg);
-    <<<"on: " + note>>>;
+    //<<<"on: " + note>>>;
 }
 
 fun void note_off(int note){
@@ -69,7 +69,7 @@ fun void note_off(int note){
     note => msg.data2;
     127 => msg.data3;
     midi_out.send(msg);
-    <<<"off:" + note>>>;
+    //<<<"off:" + note>>>;
     
 }
 
