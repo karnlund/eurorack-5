@@ -59,6 +59,7 @@ fun void note_on(int note, int velocity){
     note => msg.data2;
     velocity => msg.data3;
     midi_out.send(msg);
+    //<<<"note" + note>>>;
 }
 
 fun void note_off(int note){
@@ -112,8 +113,7 @@ fun void push(int note){
 while(true){
     midi_in => now;
     while(midi_in.recv(midi_msg)){
-        //<<<midi_msg>>>;
-        midi_msg.data1 & 0x0f => int event_channel;
+         midi_msg.data1 & 0x0f => int event_channel;
         ((midi_msg.data1 & 0xf0) >> 4) => int event_type;
         if(event_type == 0xb & midi_msg.data2 == 74){
             continue;
@@ -140,13 +140,10 @@ while(true){
                 note_off(last_note);
             }
 
-            if(current_note != -1){
+            if(current_note != -1 & current_note != last_note){
                 note_on(current_note, current_velocity);
             }
-            
-            //<<<"current_note:" + current_note>>>;
-            //<<<notes[0],notes[1],notes[2],notes[3],notes[4],notes[5],notes[6]>>>;
-        }
+          }
         
     }
 }
