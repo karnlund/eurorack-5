@@ -59,7 +59,7 @@ fun void note_on(int note, int velocity){
     note => msg.data2;
     velocity => msg.data3;
     midi_out.send(msg);
-    //<<<"note" + note>>>;
+    <<<"on: " + note>>>;
 }
 
 fun void note_off(int note){
@@ -69,6 +69,7 @@ fun void note_off(int note){
     note => msg.data2;
     127 => msg.data3;
     midi_out.send(msg);
+    <<<"off:" + note>>>;
     
 }
 
@@ -136,14 +137,14 @@ while(true){
         }
 
         if(event_type == 8 || event_type == 9){
-            if(last_note != -1){
+            if(last_note != -1 && current_note != last_note){
                 note_off(last_note);
             }
-
+            1::ms => now;
             if(current_note != -1 & current_note != last_note){
                 note_on(current_note, current_velocity);
             }
-          }
+        }
         
     }
 }
