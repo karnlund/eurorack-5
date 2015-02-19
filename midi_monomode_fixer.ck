@@ -140,7 +140,7 @@ while(true){
             if(last_note != -1 && current_note != last_note){
                 note_off(last_note);
             }
-            1::ms => now;
+            //1::ms => now;
             if(current_note != -1 & current_note != last_note){
                 note_on(current_note, current_velocity);
             }
