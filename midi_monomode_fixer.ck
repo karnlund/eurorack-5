@@ -52,6 +52,26 @@ fun int is_held(int note){
 
 
 
+fun void bend(int pitch){
+    MidiMsg msg;
+    
+    0xe0 + out_channel => msg.data1;
+    0 => msg.data2;
+    pitch => msg.data3;
+    midi_out.send(msg);
+    //<<<"bend:" + pitch>>>;
+}
+
+fun void controller(int ctrl, int value){
+    MidiMsg msg;
+    
+    0xb0 + out_channel => msg.data1;
+    ctrl => msg.data2;
+    value => msg.data3;
+    midi_out.send(msg);
+    //<<<"ctrl:" + ctrl + ", value:" + value>>>;
+}
+
 fun void note_on(int note, int velocity){
     MidiMsg msg;
     
@@ -119,7 +139,18 @@ while(true){
         if(event_type == 0xb & midi_msg.data2 == 74){
             continue;
         }
+        //<<<"midi_msg.data1:" + midi_msg.data1 + "midi_msg.data2:" + midi_msg.data2 + "midi_msg.data3:" + midi_msg.data3>>>;
         //<<<"event_channel: " + event_channel + ", event_type:" + event_type>>>;
+
+        if(event_type == 11){
+            // controller
+            controller(midi_msg.data2, midi_msg.data3);
+        }
+        else
+        if(event_type == 14){
+            // pitch bend
+            bend(midi_msg.data3);
+        }
         
         if(event_type == 9){
             //<<<"note on">>>;
@@ -145,6 +176,7 @@ while(true){
                 note_on(current_note, current_velocity);
             }
         }
+
         
     }
 }
